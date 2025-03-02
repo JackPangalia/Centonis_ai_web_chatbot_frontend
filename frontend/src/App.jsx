@@ -25,15 +25,15 @@ function App() {
   } = useChat();
 
   return (
-    <div className="bg-gray-50 w-full h-screen flex items-center justify-center">
+
       <div
-        className={`absolute bottom-16 right-4 
+        className={`absolute
           ${
             isExpanded
               ? "w-[90vw] h-[90vh] max-w-[900px] max-h-[900px]"
               : "w-[90%] max-w-[400px] h-[80vh] max-h-[700px]"
           }
-          rounded-2xl shadow-lg flex flex-col transition-all duration-300`}
+          rounded-2xl shadow-lg flex flex-col transition-all duration-300 bg-white`}
       >
         <Header 
           isExpanded={isExpanded}
@@ -58,7 +58,6 @@ function App() {
           <SessionExpiredModal onDismiss={handleDismissSessionExpiredModal} />
         )}
       </div>
-    </div>
   );
 }
 
