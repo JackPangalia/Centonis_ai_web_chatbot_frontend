@@ -1,4 +1,3 @@
-// App.jsx
 import { useState } from "react";
 import ChatContainer from "./components/ChatContainer";
 import SessionExpiredModal from "./components/SessionExpiredModal";
@@ -25,39 +24,38 @@ function App() {
   } = useChat();
 
   return (
+    <div
+      className={`relative mx-auto
+        ${
+          isExpanded
+            ? "w-[90vw] h-[90vh] max-w-[900px] max-h-[900px]"
+            : "w-full h-full"
+        }
+        rounded-2xl shadow-lg flex flex-col transition-all duration-300 bg-white`}
+    >
+      <Header 
+        isExpanded={isExpanded}
+        setIsExpanded={setIsExpanded}
+        hasMessages={messages.length > 0}
+        onClearChat={handleClearChat}
+      />
 
-      <div
-        className={`absolute
-          ${
-            isExpanded
-              ? "w-[90vw] h-[90vh] max-w-[900px] max-h-[900px]"
-              : "w-[90%] max-w-[400px] h-[80vh] max-h-[700px]"
-          }
-          rounded-2xl shadow-lg flex flex-col transition-all duration-300 bg-white`}
-      >
-        <Header 
-          isExpanded={isExpanded}
-          setIsExpanded={setIsExpanded}
-          hasMessages={messages.length > 0}
-          onClearChat={handleClearChat}
-        />
+      {error && <ErrorBanner message={error} />}
 
-        {error && <ErrorBanner message={error} />}
+      <ChatContainer
+        messages={messages}
+        suggestions={suggestions}
+        isLoading={isLoading}
+        inputMessage={inputMessage}
+        onInputChange={handleInputChange}
+        onSendMessage={handleSendMessage}
+        onSuggestionClick={handleSuggestionClick}
+      />
 
-        <ChatContainer
-          messages={messages}
-          suggestions={suggestions}
-          isLoading={isLoading}
-          inputMessage={inputMessage}
-          onInputChange={handleInputChange}
-          onSendMessage={handleSendMessage}
-          onSuggestionClick={handleSuggestionClick}
-        />
-
-        {showSessionExpiredModal && (
-          <SessionExpiredModal onDismiss={handleDismissSessionExpiredModal} />
-        )}
-      </div>
+      {showSessionExpiredModal && (
+        <SessionExpiredModal onDismiss={handleDismissSessionExpiredModal} />
+      )}
+    </div>
   );
 }
 
