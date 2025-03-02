@@ -7,7 +7,7 @@ import useChat from "./hooks/useChat";
 
 function App() {
   const [isExpanded, setIsExpanded] = useState(false);
-  
+
   const {
     messages,
     suggestions,
@@ -20,20 +20,20 @@ function App() {
     handleInputChange,
     handleClearChat,
     handleSuggestionClick,
-    handleDismissSessionExpiredModal
+    handleDismissSessionExpiredModal,
   } = useChat();
 
   return (
     <div
-      className={`relative mx-auto
-        ${
-          isExpanded
-            ? "w-[90vw] h-[90vh] max-w-[900px] max-h-[900px]"
-            : "w-full h-full"
-        }
-        rounded-2xl shadow-lg flex flex-col transition-all duration-300 bg-white`}
+      className={`absolute 
+          ${
+            isExpanded
+              ? "w-[90vw] h-[90vh] max-w-[900px] max-h-[900px]"
+              : "w-[90%] max-w-[400px] h-[80vh] max-h-[700px]"
+          }
+          rounded-2xl shadow-lg flex flex-col transition-all duration-300`}
     >
-      <Header 
+      <Header
         isExpanded={isExpanded}
         setIsExpanded={setIsExpanded}
         hasMessages={messages.length > 0}
