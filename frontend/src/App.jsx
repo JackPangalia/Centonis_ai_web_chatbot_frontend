@@ -25,13 +25,13 @@ function App() {
 
   return (
     <div
-      className={`fixed bottom-3 right-3
+      className={`absolute bottom-3 right-3 z-50
           ${
             isExpanded
               ? "w-[90vw] h-[90vh] max-w-[900px] max-h-[900px]"
               : "w-[90%] max-w-[400px] h-[80vh] max-h-[700px]"
           }
-          rounded-2xl shadow-lg flex flex-col transition-all duration-300 bg-white`}
+          rounded-2xl shadow-lg flex flex-col transition-all duration-300 bg-red-400`}
     >
       <Header
         isExpanded={isExpanded}
