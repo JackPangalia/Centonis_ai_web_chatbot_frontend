@@ -14,7 +14,7 @@ const Header = ({ isExpanded, setIsExpanded, hasMessages, onClearChat }) => {
     <div className="flex items-center justify-between p-3 border-b border-gray-200 rounded-tr-2xl rounded-tl-2xl">
       <div className="flex items-center">
         {/* <img src="././dist/logo_placeholder.jpg" alt="logo" className="w-auto h-6" /> */}
-        <p className="ml-2">LearnAI</p>
+        <p className="ml-2">Learn about us with AI</p>
       </div>
       <div className="flex items-center space-x-2">
         {/* Close button */}
