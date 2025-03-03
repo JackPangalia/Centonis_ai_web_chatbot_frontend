@@ -12,7 +12,16 @@ const useChat = () => {
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [suggestions, setSuggestions] = useState([]);
+  
+  // Define initial suggestions
+  const initialSuggestions = [
+    "What AI solutions do you offer?",
+    "How does your chatbot development process work?",
+    "Can you explain how AI agents improve business efficiency?"
+  ];
+  // Initialize suggestions state with default suggestions
+  const [suggestions, setSuggestions] = useState(initialSuggestions);
+  
   const [showSessionExpiredModal, setShowSessionExpiredModal] = useState(false);
   
   // References
@@ -145,28 +154,37 @@ const useChat = () => {
     }
   }
 
+  // This function handles suggestions coming from the server.
+  // If new suggestions are provided, they will override the initial suggestions.
   function handleSuggestions(data) {
     setSuggestions(data.suggestions);
   }
 
   // User interactions
-  const handleSendMessage = useCallback((e) => {
+  // Modified handleSendMessage to accept an optional customMessage parameter.
+  const handleSendMessage = useCallback((e, customMessage) => {
     if (e && e.preventDefault) e.preventDefault();
-    if (!inputMessage.trim() || !socket) return;
+    const messageToSend = customMessage !== undefined ? customMessage : inputMessage;
+    if (!messageToSend.trim() || !socket) return;
 
     const newMessage = {
       messageType: "user",
-      message: inputMessage,
+      message: messageToSend,
       complete: true,
     };
 
     setMessages(prev => [...prev, newMessage]);
     setIsLoading(true);
 
-    socket.emit("send_prompt", { prompt: inputMessage });
+    socket.emit("send_prompt", { prompt: messageToSend });
     setInputMessage("");
     setSuggestions([]);
   }, [inputMessage, socket]);
+
+  // Modified handleSuggestionClick to immediately send the suggestion.
+  const handleSuggestionClick = useCallback((suggestion) => {
+    handleSendMessage(null, suggestion);
+  }, [handleSendMessage]);
 
   const handleInputChange = useCallback((e) => {
     setInputMessage(e.target.value);
@@ -180,11 +198,6 @@ const useChat = () => {
   const handleDismissSessionExpiredModal = useCallback(() => {
     setShowSessionExpiredModal(false);
   }, []);
-
-  const handleSuggestionClick = useCallback((suggestion) => {
-    setInputMessage(suggestion);
-    handleSendMessage();
-  }, [handleSendMessage]);
 
   return {
     messages,

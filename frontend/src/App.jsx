@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import ChatContainer from "./components/ChatContainer";
 import SessionExpiredModal from "./components/SessionExpiredModal";
 import ErrorBanner from "./components/ErrorBanner";
@@ -7,6 +7,7 @@ import useChat from "./hooks/useChat";
 
 function App() {
   const [isExpanded, setIsExpanded] = useState(false);
+  const appContainerRef = useRef(null);
 
   const {
     messages,
@@ -23,15 +24,52 @@ function App() {
     handleDismissSessionExpiredModal,
   } = useChat();
 
+  // Inside your chatbot App.jsx
+  useEffect(() => {
+    window.parent.postMessage(
+      { type: "resizeChatbot", expanded: isExpanded },
+      "*"
+    );
+  }, [isExpanded]);
+
+  // Add wheel event listener to prevent scroll propagation
+  useEffect(() => {
+    const container = appContainerRef.current;
+    
+    const preventScrollPropagation = (e) => {
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      
+      // If we're at the top and trying to scroll up, or at the bottom and trying to scroll down
+      if (
+        (scrollTop === 0 && e.deltaY < 0) ||
+        (Math.abs(scrollHeight - clientHeight - scrollTop) < 1 && e.deltaY > 0)
+      ) {
+        // Let the parent scroll
+        return;
+      }
+      
+      // Otherwise prevent the event from bubbling up
+      e.stopPropagation();
+    };
+    
+    if (container) {
+      container.addEventListener('wheel', preventScrollPropagation, { passive: false });
+    }
+    
+    return () => {
+      if (container) {
+        container.removeEventListener('wheel', preventScrollPropagation);
+      }
+    };
+  }, []);
+
   return (
     <div
-      className={`absolute bottom-3 right-3 z-50
-          ${
-            isExpanded
-              ? "w-[90vw] h-[90vh] max-w-[900px] max-h-[900px]"
-              : "w-[90%] max-w-[400px] h-[80vh] max-h-[700px]"
-          }
-          rounded-2xl shadow-lg flex flex-col transition-all duration-300 bg-red-400`}
+      ref={appContainerRef}
+      className={`z-50
+          h-screen w-screen
+          rounded-2xl shadow-lg flex flex-col transition-all duration-300 bg-white overflow-hidden`}
+      onWheel={(e) => e.stopPropagation()}
     >
       <Header
         isExpanded={isExpanded}
