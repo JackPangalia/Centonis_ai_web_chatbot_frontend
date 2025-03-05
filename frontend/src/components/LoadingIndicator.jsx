@@ -1,4 +1,9 @@
 // components/LoadingIndicator.jsx
+/**
+ * LoadingIndicator component displays a loading animation.
+ *
+ * @component
+ */
 const LoadingIndicator = () => {
   return (
     <div className="flex items-center mt-2 text-gray-500">
@@ -7,4 +12,4 @@ const LoadingIndicator = () => {
   );
 };
 
-export default LoadingIndicator
+export default LoadingIndicator;

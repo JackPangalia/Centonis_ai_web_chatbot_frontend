@@ -1,4 +1,10 @@
 // components/ErrorBanner.jsx
+/**
+ * ErrorBanner component displays an error message in a banner.
+ *
+ * @component
+ * @param {string} message - The error message to display.
+ */
 const ErrorBanner = ({ message }) => {
   return (
     <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-2 text-sm">
@@ -8,4 +14,4 @@ const ErrorBanner = ({ message }) => {
   );
 };
 
-export default ErrorBanner
+export default ErrorBanner;

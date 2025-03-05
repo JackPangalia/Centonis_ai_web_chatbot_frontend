@@ -1,3 +1,10 @@
+/**
+ * SuggestionList component displays a list of clickable suggestions.
+ *
+ * @component
+ * @param {string[]} suggestions - An array of suggestion strings.
+ * @param {function} onSuggestionClick - Callback function to handle suggestion clicks.
+ */
 const SuggestionList = ({ suggestions, onSuggestionClick }) => {
   return (
     <div className="mb-20 flex flex-col gap-2">
@@ -14,4 +21,4 @@ const SuggestionList = ({ suggestions, onSuggestionClick }) => {
   );
 };
 
-export default SuggestionList
+export default SuggestionList;

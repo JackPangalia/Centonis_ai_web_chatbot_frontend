@@ -5,6 +5,12 @@ import ErrorBanner from "./components/ErrorBanner";
 import Header from "./components/Header";
 import useChat from "./hooks/useChat";
 
+/**
+ * App component is the main component of the chatbot application.
+ * It manages the state and interactions of the chat interface.
+ *
+ * @component
+ */
 function App() {
   const [isExpanded, setIsExpanded] = useState(false);
   const appContainerRef = useRef(null);
@@ -24,7 +30,7 @@ function App() {
     handleDismissSessionExpiredModal,
   } = useChat();
 
-  // Inside your chatbot App.jsx
+  // Effect to send a message to the parent window for resizing the chatbot
   useEffect(() => {
     window.parent.postMessage(
       { type: "resizeChatbot", expanded: isExpanded },
@@ -32,13 +38,13 @@ function App() {
     );
   }, [isExpanded]);
 
-  // Add wheel event listener to prevent scroll propagation
+  // Effect to add and remove wheel event listener to prevent scroll propagation
   useEffect(() => {
     const container = appContainerRef.current;
-    
+
     const preventScrollPropagation = (e) => {
       const { scrollTop, scrollHeight, clientHeight } = container;
-      
+
       // If we're at the top and trying to scroll up, or at the bottom and trying to scroll down
       if (
         (scrollTop === 0 && e.deltaY < 0) ||
@@ -47,15 +53,15 @@ function App() {
         // Let the parent scroll
         return;
       }
-      
+
       // Otherwise prevent the event from bubbling up
       e.stopPropagation();
     };
-    
+
     if (container) {
       container.addEventListener('wheel', preventScrollPropagation, { passive: false });
     }
-    
+
     return () => {
       if (container) {
         container.removeEventListener('wheel', preventScrollPropagation);

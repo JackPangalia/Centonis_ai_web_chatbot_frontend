@@ -3,6 +3,12 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import useSocketConnection from "./useSocketConnection";
 import useLocalStorage from "./useLocalStorage";
 
+/**
+ * useChat custom hook manages the state and logic for a chat application, including
+ * message handling, socket communication, and session management.
+ *
+ * @returns {object} An object containing chat state and handler functions.
+ */
 const useChat = () => {
   // State management with custom hooks
   const { getItem, setItem, removeItem } = useLocalStorage();

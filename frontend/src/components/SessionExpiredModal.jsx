@@ -1,3 +1,9 @@
+/**
+ * SessionExpiredModal component displays a modal indicating that the chat session has expired.
+ *
+ * @component
+ * @param {function} onDismiss - Callback function to close the modal.
+ */
 const SessionExpiredModal = ({ onDismiss }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -18,4 +24,4 @@ const SessionExpiredModal = ({ onDismiss }) => {
   );
 };
 
-export default SessionExpiredModal
+export default SessionExpiredModal;

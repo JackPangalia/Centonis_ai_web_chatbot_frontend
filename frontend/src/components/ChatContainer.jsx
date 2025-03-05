@@ -5,6 +5,20 @@ import ChatInput from "./ChatInput";
 import SuggestionList from "./SuggestionList";
 import LoadingIndicator from "./LoadingIndicator";
 
+/**
+ * ChatContainer component renders a chat interface with messages, suggestions,
+ * an input field, and a loading indicator.
+ *
+ * @component
+ * @param {object[]} messages - An array of message objects.
+ * @param {string[]} suggestions - An array of suggestion strings.
+ * @param {boolean} isLoading - Indicates whether the chat is loading.
+ * @param {string} inputMessage - The current input message.
+ * @param {function} onInputChange - Callback function for input message changes.
+ * @param {function} onSendMessage - Callback function for sending a message.
+ * @param {function} onSuggestionClick - Callback function for clicking a suggestion.
+ *
+ */
 const ChatContainer = ({
   messages,
   suggestions,
@@ -12,11 +26,11 @@ const ChatContainer = ({
   inputMessage,
   onInputChange,
   onSendMessage,
-  onSuggestionClick
+  onSuggestionClick,
 }) => {
   const messagesEndRef = useRef(null);
 
-  // Auto-scroll to bottom when messages change
+  // Auto-scroll to bottom when messages, loading state, or suggestions change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading, suggestions]);

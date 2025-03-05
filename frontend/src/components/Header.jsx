@@ -3,6 +3,16 @@
 import Expand from "../Icons/Expand";
 import X from "../Icons/X";
 
+/**
+ * Header component displays the header of the chat interface, including title,
+ * close button, and expand/collapse button.
+ *
+ * @component
+ * @param {boolean} isExpanded - Indicates whether the chat interface is expanded.
+ * @param {function} setIsExpanded - Callback function to toggle the expansion state.
+ * @param {boolean} hasMessages - Indicates whether there are messages in the chat.
+ * @param {function} onClearChat - Callback function to clear the chat messages.
+ */
 const Header = ({ isExpanded, setIsExpanded, hasMessages, onClearChat }) => {
   // Add a function to close the chatbot
   const handleClose = () => {
