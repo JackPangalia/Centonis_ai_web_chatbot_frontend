@@ -32,7 +32,7 @@ const useSocketConnection = ({
 
   useEffect(() => {
     console.log("Connecting to Socket.IO server...");
-    const newSocket = io("http://localhost:3001", {
+    const newSocket = io("https://centonis-web-chatbot-17aa4380f2a7.herokuapp.com", {
       reconnection: true,
       reconnectionAttempts: 5,
       reconnectionDelay: 1000,
