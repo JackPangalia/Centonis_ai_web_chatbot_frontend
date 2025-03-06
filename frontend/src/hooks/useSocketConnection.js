@@ -1,4 +1,3 @@
-// hooks/useSocketConnection.js
 import { useState, useEffect } from "react";
 import io from "socket.io-client";
 import useLocalStorage from "./useLocalStorage";
@@ -36,25 +35,45 @@ const useSocketConnection = ({
       reconnection: true,
       reconnectionAttempts: 5,
       reconnectionDelay: 1000,
+      transports: ['websocket', 'polling'],
+      withCredentials: true,
+      extraHeaders: {
+        "Origin": "https://jackpangalia.github.io"
+      }
+    });
+
+    // Debug connection status
+    newSocket.on('connect', () => {
+      console.log('Socket connected successfully:', newSocket.id);
+      const savedSessionId = getItem("chatSessionId");
+      if (savedSessionId) {
+        console.log('Resuming session with ID:', savedSessionId);
+        newSocket.emit("resume_session", { sessionId: savedSessionId });
+      } else {
+        console.log('Initializing new session');
+        newSocket.emit("init_session");
+      }
+    });
+
+    newSocket.on('connect_error', (error) => {
+      console.error('Connection error:', error);
+    });
+
+    newSocket.on('disconnect', (reason) => {
+      console.log('Socket disconnected:', reason);
     });
 
     setSocket(newSocket);
 
-    // Attempt to resume a previous session or initialize a new one
-    const savedSessionId = getItem("chatSessionId");
-    if (savedSessionId) {
-      newSocket.emit("resume_session", { sessionId: savedSessionId });
-    } else {
-      newSocket.emit("init_session");
-    }
-
     // Event listeners
     newSocket.on("session_created", (data) => {
+      console.log('Session created:', data);
       setSessionId(data.sessionId);
       onSessionCreated && onSessionCreated(data);
     });
 
     newSocket.on("session_resumed", (data) => {
+      console.log('Session resumed:', data);
       setSessionId(data.sessionId);
       onSessionResumed && onSessionResumed(data);
     });
@@ -68,6 +87,7 @@ const useSocketConnection = ({
     });
 
     newSocket.on("error", (error) => {
+      console.error('Socket error:', error);
       onError && onError(error);
     });
 
@@ -77,15 +97,6 @@ const useSocketConnection = ({
 
     newSocket.on("suggestions", (data) => {
       onSuggestions && onSuggestions(data);
-    });
-
-    newSocket.on("connect", () => {
-      const currentSessionId = getItem("chatSessionId");
-      if (currentSessionId) {
-        newSocket.emit("resume_session", { sessionId: currentSessionId });
-      } else {
-        newSocket.emit("init_session");
-      }
     });
 
     return () => {
